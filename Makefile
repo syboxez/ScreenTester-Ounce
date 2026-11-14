@@ -7,7 +7,7 @@ $(error "Please set DEVKITPRO in your environment. export DEVKITPRO=<path to>/de
 endif
 
 TOPDIR ?= $(CURDIR)
-include $(DEVKITPRO)/libnx/switch_rules
+include $(DEVKITPRO)/libounce/switch2_rules
 
 #---------------------------------------------------------------------------------
 # TARGET is the name of the output
@@ -27,7 +27,7 @@ include $(DEVKITPRO)/libnx/switch_rules
 #   If not set, it attempts to use one of the following (in this order):
 #     - <Project name>.jpg
 #     - icon.jpg
-#     - <libnx folder>/default_icon.jpg
+#     - <libounce folder>/default_icon.jpg
 #---------------------------------------------------------------------------------
 TARGET		  := $(notdir $(CURDIR))
 BUILD		  := build
@@ -55,18 +55,19 @@ CFLAGS	+=	$(INCLUDE) -D__SWITCH__
 CXXFLAGS	:= $(CFLAGS) -fno-rtti -fno-exceptions -std=gnu++11
 
 ASFLAGS	:=	-g $(ARCH)
-LDFLAGS	=	-specs=$(DEVKITPRO)/libnx/switch.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
+LDFLAGS	=	-specs=$(DEVKITPRO)/libounce/switch.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
 
 LIBS	:=	-lSDL2_image -lSDL2_mixer -lSDL2 \
-			-lpng -lz -ljpeg -legl -lglapi -ldrm_nouveau \
+			-lpng -lz -ljpeg -lEGL -lglapi -ldrm_nouveau \
 			-lvorbisidec -logg -lmpg123 -lmodplug -lstdc++ \
-			-lnx -lm
+			-lounce -lm
 
 #---------------------------------------------------------------------------------
 # list of directories containing libraries, this must be the top level containing
 # include and lib
 #---------------------------------------------------------------------------------
-LIBDIRS	:= $(PORTLIBS) $(LIBNX)
+LIBOUNCE   ?= $(DEVKITPRO)/libounce
+LIBDIRS	:= $(PORTLIBS) $(LIBOUNCE)
 
 
 #---------------------------------------------------------------------------------
